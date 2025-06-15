@@ -1,7 +1,7 @@
 #ifndef UART_DEBUG_H
 #define UART_DEBUG_H
 
-#include "stm32f10x.h"  // Hoặc stm32f4xx.h nếu dùng STM32F4
+#include "stm32f1xx.h"  // Hoặc stm32f4xx.h nếu dùng STM32F4
 
 // Khởi tạo UART
 void uart_init(void);

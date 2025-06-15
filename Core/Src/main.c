@@ -144,7 +144,7 @@ int main(void) {
             sprintf(buffer, "Nhiet do: %.1f C, Do am: %.1f%%\r\n", temp, humi);
             uart_send(buffer);
 
-            if (temp > 20.0f) {
+            if (temp > 35.0f) {
                 uart_send("BAT QUAT (Relay ON)\r\n");
                 GPIOB->ODR |= (1 << RELAY_PIN);
             } else if (temp < 17.0f) {

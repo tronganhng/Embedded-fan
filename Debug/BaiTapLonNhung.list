@@ -1313,7 +1313,7 @@ void uart_init(void) {
  8000f10:	4a0b      	ldr	r2, [pc, #44]	@ (8000f40 <uart_init+0x48>)
  8000f12:	f023 03f0 	bic.w	r3, r3, #240	@ 0xf0
  8000f16:	6053      	str	r3, [r2, #4]
-    GPIOA->CRH |= (0x0B << 4); // PA9: AF push-pull
+    GPIOA->CRH |= (11 << 4); // PA9: AF push-pull
  8000f18:	4b09      	ldr	r3, [pc, #36]	@ (8000f40 <uart_init+0x48>)
  8000f1a:	685b      	ldr	r3, [r3, #4]
  8000f1c:	4a08      	ldr	r2, [pc, #32]	@ (8000f40 <uart_init+0x48>)
@@ -1463,7 +1463,7 @@ void timer_init(void) {
  8001020:	f04f 4380 	mov.w	r3, #1073741824	@ 0x40000000
  8001024:	2247      	movs	r2, #71	@ 0x47
  8001026:	629a      	str	r2, [r3, #40]	@ 0x28
-    TIM2->ARR = 0xFFFF;
+    TIM2->ARR = 65535;
  8001028:	f04f 4380 	mov.w	r3, #1073741824	@ 0x40000000
  800102c:	f64f 72ff 	movw	r2, #65535	@ 0xffff
  8001030:	62da      	str	r2, [r3, #44]	@ 0x2c
@@ -1553,7 +1553,7 @@ void gpio_input_pa(uint8_t pin) {
  80010be:	79fb      	ldrb	r3, [r7, #7]
  80010c0:	2b07      	cmp	r3, #7
  80010c2:	d817      	bhi.n	80010f4 <gpio_input_pa+0x4c>
-        GPIOA->CRL &= ~(0xF << (pin * 4));
+        GPIOA->CRL &= ~(15 << (pin * 4));
  80010c4:	4b1b      	ldr	r3, [pc, #108]	@ (8001134 <gpio_input_pa+0x8c>)
  80010c6:	681b      	ldr	r3, [r3, #0]
  80010c8:	79fa      	ldrb	r2, [r7, #7]
@@ -1565,7 +1565,7 @@ void gpio_input_pa(uint8_t pin) {
  80010d6:	4a17      	ldr	r2, [pc, #92]	@ (8001134 <gpio_input_pa+0x8c>)
  80010d8:	400b      	ands	r3, r1
  80010da:	6013      	str	r3, [r2, #0]
-        GPIOA->CRL |= (0x4 << (pin * 4)); // Floating input
+        GPIOA->CRL |= (4 << (pin * 4)); // Floating input
  80010dc:	4b15      	ldr	r3, [pc, #84]	@ (8001134 <gpio_input_pa+0x8c>)
  80010de:	681b      	ldr	r3, [r3, #0]
  80010e0:	79fa      	ldrb	r2, [r7, #7]
@@ -1577,12 +1577,12 @@ void gpio_input_pa(uint8_t pin) {
  80010ee:	430b      	orrs	r3, r1
  80010f0:	6013      	str	r3, [r2, #0]
     } else {
-        GPIOA->CRH &= ~(0xF << ((pin - 8) * 4));
-        GPIOA->CRH |= (0x4 << ((pin - 8) * 4));
+        GPIOA->CRH &= ~(15 << ((pin - 8) * 4));
+        GPIOA->CRH |= (4 << ((pin - 8) * 4));
     }
 }
  80010f2:	e018      	b.n	8001126 <gpio_input_pa+0x7e>
-        GPIOA->CRH &= ~(0xF << ((pin - 8) * 4));
+        GPIOA->CRH &= ~(15 << ((pin - 8) * 4));
  80010f4:	4b0f      	ldr	r3, [pc, #60]	@ (8001134 <gpio_input_pa+0x8c>)
  80010f6:	685b      	ldr	r3, [r3, #4]
  80010f8:	79fa      	ldrb	r2, [r7, #7]
@@ -1595,7 +1595,7 @@ void gpio_input_pa(uint8_t pin) {
  8001108:	4a0a      	ldr	r2, [pc, #40]	@ (8001134 <gpio_input_pa+0x8c>)
  800110a:	400b      	ands	r3, r1
  800110c:	6053      	str	r3, [r2, #4]
-        GPIOA->CRH |= (0x4 << ((pin - 8) * 4));
+        GPIOA->CRH |= (4 << ((pin - 8) * 4));
  800110e:	4b09      	ldr	r3, [pc, #36]	@ (8001134 <gpio_input_pa+0x8c>)
  8001110:	685b      	ldr	r3, [r3, #4]
  8001112:	79fa      	ldrb	r2, [r7, #7]
@@ -1634,7 +1634,7 @@ void gpio_input_pb(uint8_t pin) {
  800114e:	79fb      	ldrb	r3, [r7, #7]
  8001150:	2b07      	cmp	r3, #7
  8001152:	d817      	bhi.n	8001184 <gpio_input_pb+0x4c>
-        GPIOB->CRL &= ~(0xF << (pin * 4));
+        GPIOB->CRL &= ~(15 << (pin * 4));
  8001154:	4b1b      	ldr	r3, [pc, #108]	@ (80011c4 <gpio_input_pb+0x8c>)
  8001156:	681b      	ldr	r3, [r3, #0]
  8001158:	79fa      	ldrb	r2, [r7, #7]
@@ -1646,7 +1646,7 @@ void gpio_input_pb(uint8_t pin) {
  8001166:	4a17      	ldr	r2, [pc, #92]	@ (80011c4 <gpio_input_pb+0x8c>)
  8001168:	400b      	ands	r3, r1
  800116a:	6013      	str	r3, [r2, #0]
-        GPIOB->CRL |= (0x4 << (pin * 4)); // Floating input
+        GPIOB->CRL |= (4 << (pin * 4)); // Floating input
  800116c:	4b15      	ldr	r3, [pc, #84]	@ (80011c4 <gpio_input_pb+0x8c>)
  800116e:	681b      	ldr	r3, [r3, #0]
  8001170:	79fa      	ldrb	r2, [r7, #7]
@@ -1658,12 +1658,12 @@ void gpio_input_pb(uint8_t pin) {
  800117e:	430b      	orrs	r3, r1
  8001180:	6013      	str	r3, [r2, #0]
     } else {
-        GPIOB->CRH &= ~(0xF << ((pin - 8) * 4));
-        GPIOB->CRH |= (0x4 << ((pin - 8) * 4));
+        GPIOB->CRH &= ~(15 << ((pin - 8) * 4));
+        GPIOB->CRH |= (4 << ((pin - 8) * 4));
     }
 }
  8001182:	e018      	b.n	80011b6 <gpio_input_pb+0x7e>
-        GPIOB->CRH &= ~(0xF << ((pin - 8) * 4));
+        GPIOB->CRH &= ~(15 << ((pin - 8) * 4));
  8001184:	4b0f      	ldr	r3, [pc, #60]	@ (80011c4 <gpio_input_pb+0x8c>)
  8001186:	685b      	ldr	r3, [r3, #4]
  8001188:	79fa      	ldrb	r2, [r7, #7]
@@ -1676,7 +1676,7 @@ void gpio_input_pb(uint8_t pin) {
  8001198:	4a0a      	ldr	r2, [pc, #40]	@ (80011c4 <gpio_input_pb+0x8c>)
  800119a:	400b      	ands	r3, r1
  800119c:	6053      	str	r3, [r2, #4]
-        GPIOB->CRH |= (0x4 << ((pin - 8) * 4));
+        GPIOB->CRH |= (4 << ((pin - 8) * 4));
  800119e:	4b09      	ldr	r3, [pc, #36]	@ (80011c4 <gpio_input_pb+0x8c>)
  80011a0:	685b      	ldr	r3, [r3, #4]
  80011a2:	79fa      	ldrb	r2, [r7, #7]
@@ -1715,7 +1715,7 @@ void gpio_output_pb(uint8_t pin) {
  80011de:	79fb      	ldrb	r3, [r7, #7]
  80011e0:	2b07      	cmp	r3, #7
  80011e2:	d817      	bhi.n	8001214 <gpio_output_pb+0x4c>
-        GPIOB->CRL &= ~(0xF << (pin * 4));
+        GPIOB->CRL &= ~(15 << (pin * 4));
  80011e4:	4b1b      	ldr	r3, [pc, #108]	@ (8001254 <gpio_output_pb+0x8c>)
  80011e6:	681b      	ldr	r3, [r3, #0]
  80011e8:	79fa      	ldrb	r2, [r7, #7]
@@ -1727,7 +1727,7 @@ void gpio_output_pb(uint8_t pin) {
  80011f6:	4a17      	ldr	r2, [pc, #92]	@ (8001254 <gpio_output_pb+0x8c>)
  80011f8:	400b      	ands	r3, r1
  80011fa:	6013      	str	r3, [r2, #0]
-        GPIOB->CRL |= (0x3 << (pin * 4)); // Output push-pull 50MHz
+        GPIOB->CRL |= (3 << (pin * 4)); // Output push-pull 50MHz
  80011fc:	4b15      	ldr	r3, [pc, #84]	@ (8001254 <gpio_output_pb+0x8c>)
  80011fe:	681b      	ldr	r3, [r3, #0]
  8001200:	79fa      	ldrb	r2, [r7, #7]
@@ -1739,12 +1739,12 @@ void gpio_output_pb(uint8_t pin) {
  800120e:	430b      	orrs	r3, r1
  8001210:	6013      	str	r3, [r2, #0]
     } else {
-        GPIOB->CRH &= ~(0xF << ((pin - 8) * 4));
-        GPIOB->CRH |= (0x3 << ((pin - 8) * 4)); // Output push-pull 50MHz
+        GPIOB->CRH &= ~(15 << ((pin - 8) * 4));
+        GPIOB->CRH |= (3 << ((pin - 8) * 4)); // Output push-pull 50MHz
     }
 }
  8001212:	e018      	b.n	8001246 <gpio_output_pb+0x7e>
-        GPIOB->CRH &= ~(0xF << ((pin - 8) * 4));
+        GPIOB->CRH &= ~(15 << ((pin - 8) * 4));
  8001214:	4b0f      	ldr	r3, [pc, #60]	@ (8001254 <gpio_output_pb+0x8c>)
  8001216:	685b      	ldr	r3, [r3, #4]
  8001218:	79fa      	ldrb	r2, [r7, #7]
@@ -1757,7 +1757,7 @@ void gpio_output_pb(uint8_t pin) {
  8001228:	4a0a      	ldr	r2, [pc, #40]	@ (8001254 <gpio_output_pb+0x8c>)
  800122a:	400b      	ands	r3, r1
  800122c:	6053      	str	r3, [r2, #4]
-        GPIOB->CRH |= (0x3 << ((pin - 8) * 4)); // Output push-pull 50MHz
+        GPIOB->CRH |= (3 << ((pin - 8) * 4)); // Output push-pull 50MHz
  800122e:	4b09      	ldr	r3, [pc, #36]	@ (8001254 <gpio_output_pb+0x8c>)
  8001230:	685b      	ldr	r3, [r3, #4]
  8001232:	79fa      	ldrb	r2, [r7, #7]
@@ -1783,13 +1783,13 @@ void gpio_output_pb(uint8_t pin) {
 void dht22_output_mode(void) {
  8001258:	b480      	push	{r7}
  800125a:	af00      	add	r7, sp, #0
-    GPIOB->CRH &= ~(0xF << 4); // PB9
+    GPIOB->CRH &= ~(15 << 4); // PB9
  800125c:	4b07      	ldr	r3, [pc, #28]	@ (800127c <dht22_output_mode+0x24>)
  800125e:	685b      	ldr	r3, [r3, #4]
  8001260:	4a06      	ldr	r2, [pc, #24]	@ (800127c <dht22_output_mode+0x24>)
  8001262:	f023 03f0 	bic.w	r3, r3, #240	@ 0xf0
  8001266:	6053      	str	r3, [r2, #4]
-    GPIOB->CRH |= (0x3 << 4);  // Output 50MHz push-pull
+    GPIOB->CRH |= (3 << 4);  // Output 50MHz push-pull
  8001268:	4b04      	ldr	r3, [pc, #16]	@ (800127c <dht22_output_mode+0x24>)
  800126a:	685b      	ldr	r3, [r3, #4]
  800126c:	4a03      	ldr	r2, [pc, #12]	@ (800127c <dht22_output_mode+0x24>)
@@ -1977,7 +1977,7 @@ uint8_t dht22_read(float *temperature) {
         }
     }
 
-    if (data[4] != ((data[0] + data[1] + data[2] + data[3]) & 0xFF)) return 1;
+    if (data[4] != ((data[0] + data[1] + data[2] + data[3]) & 255)) return 1;
  80013ca:	7b3b      	ldrb	r3, [r7, #12]
  80013cc:	461a      	mov	r2, r3
  80013ce:	7a3b      	ldrb	r3, [r7, #8]
@@ -1994,7 +1994,7 @@ uint8_t dht22_read(float *temperature) {
  80013e4:	2301      	movs	r3, #1
  80013e6:	e020      	b.n	800142a <dht22_read+0x1aa>
 
-    int16_t temp_raw = ((data[2] & 0x7F) << 8) | data[3];
+    int16_t temp_raw = ((data[2] & 127) << 8) | data[3];
  80013e8:	7abb      	ldrb	r3, [r7, #10]
  80013ea:	021b      	lsls	r3, r3, #8
  80013ec:	b21b      	sxth	r3, r3
@@ -2004,7 +2004,7 @@ uint8_t dht22_read(float *temperature) {
  80013f6:	b21b      	sxth	r3, r3
  80013f8:	4313      	orrs	r3, r2
  80013fa:	823b      	strh	r3, [r7, #16]
-    if (data[2] & 0x80) temp_raw = -temp_raw;
+    if (data[2] & 128) temp_raw = -temp_raw;
  80013fc:	7abb      	ldrb	r3, [r7, #10]
  80013fe:	b25b      	sxtb	r3, r3
  8001400:	2b00      	cmp	r3, #0
@@ -2049,7 +2049,7 @@ void adc_init(void) {
  8001444:	4a0a      	ldr	r2, [pc, #40]	@ (8001470 <adc_init+0x34>)
  8001446:	f443 7301 	orr.w	r3, r3, #516	@ 0x204
  800144a:	6193      	str	r3, [r2, #24]
-    GPIOA->CRL &= ~(0xF << (POTENTIOMETER * 4)); // PA0: analog input
+    GPIOA->CRL &= ~(15 << (POTENTIOMETER * 4)); // PA0: analog input
  800144c:	4b09      	ldr	r3, [pc, #36]	@ (8001474 <adc_init+0x38>)
  800144e:	681b      	ldr	r3, [r3, #0]
  8001450:	4a08      	ldr	r2, [pc, #32]	@ (8001474 <adc_init+0x38>)
@@ -2125,13 +2125,13 @@ void pwm_init(void) {
  80014ca:	f043 0302 	orr.w	r3, r3, #2
  80014ce:	61d3      	str	r3, [r2, #28]
 
-    GPIOA->CRL &= ~(0xF << (FAN_PWM_PIN * 4));
+    GPIOA->CRL &= ~(15 << (FAN_PWM_PIN * 4));
  80014d0:	4b16      	ldr	r3, [pc, #88]	@ (800152c <pwm_init+0x78>)
  80014d2:	681b      	ldr	r3, [r3, #0]
  80014d4:	4a15      	ldr	r2, [pc, #84]	@ (800152c <pwm_init+0x78>)
  80014d6:	f023 6370 	bic.w	r3, r3, #251658240	@ 0xf000000
  80014da:	6013      	str	r3, [r2, #0]
-    GPIOA->CRL |= (0xB << (FAN_PWM_PIN * 4)); // AF push-pull
+    GPIOA->CRL |= (11 << (FAN_PWM_PIN * 4)); // AF push-pull
  80014dc:	4b13      	ldr	r3, [pc, #76]	@ (800152c <pwm_init+0x78>)
  80014de:	681b      	ldr	r3, [r3, #0]
  80014e0:	4a12      	ldr	r2, [pc, #72]	@ (800152c <pwm_init+0x78>)

@@ -36,7 +36,7 @@ uint8_t fan_auto_state = 0; // Trạng thái quạt trong AUTO (0 = tắt, 1 = b
 void uart_init(void) {
     RCC->APB2ENR |= RCC_APB2ENR_IOPAEN | RCC_APB2ENR_USART1EN | RCC_APB2ENR_AFIOEN;
     GPIOA->CRH &= ~(GPIO_CRH_CNF9 | GPIO_CRH_MODE9);
-    GPIOA->CRH |= (0x0B << 4); // PA9: AF push-pull
+    GPIOA->CRH |= (11 << 4); // PA9: AF push-pull
     USART1->BRR = 72000000 / 9600;
     USART1->CR1 = USART_CR1_TE | USART_CR1_UE;
 }
@@ -65,7 +65,7 @@ void SystemInit72MHz(void) {
 void timer_init(void) {
     RCC->APB1ENR |= RCC_APB1ENR_TIM2EN;
     TIM2->PSC = 72 - 1;
-    TIM2->ARR = 0xFFFF;
+    TIM2->ARR = 65535;
     TIM2->CR1 |= TIM_CR1_CEN;
 }
 
@@ -82,39 +82,39 @@ void delay_ms(uint32_t ms) {
 void gpio_input_pa(uint8_t pin) {
     RCC->APB2ENR |= RCC_APB2ENR_IOPAEN;
     if (pin < 8) {
-        GPIOA->CRL &= ~(0xF << (pin * 4));
-        GPIOA->CRL |= (0x4 << (pin * 4)); // Floating input
+        GPIOA->CRL &= ~(15 << (pin * 4));
+        GPIOA->CRL |= (4 << (pin * 4)); // Floating input
     } else {
-        GPIOA->CRH &= ~(0xF << ((pin - 8) * 4));
-        GPIOA->CRH |= (0x4 << ((pin - 8) * 4));
+        GPIOA->CRH &= ~(15 << ((pin - 8) * 4));
+        GPIOA->CRH |= (4 << ((pin - 8) * 4));
     }
 }
 
 void gpio_input_pb(uint8_t pin) {
     RCC->APB2ENR |= RCC_APB2ENR_IOPBEN;
     if (pin < 8) {
-        GPIOB->CRL &= ~(0xF << (pin * 4));
-        GPIOB->CRL |= (0x4 << (pin * 4)); // Floating input
+        GPIOB->CRL &= ~(15 << (pin * 4));
+        GPIOB->CRL |= (4 << (pin * 4)); // Floating input
     } else {
-        GPIOB->CRH &= ~(0xF << ((pin - 8) * 4));
-        GPIOB->CRH |= (0x4 << ((pin - 8) * 4));
+        GPIOB->CRH &= ~(15 << ((pin - 8) * 4));
+        GPIOB->CRH |= (4 << ((pin - 8) * 4));
     }
 }
 
 void gpio_output_pb(uint8_t pin) {
     RCC->APB2ENR |= RCC_APB2ENR_IOPBEN;
     if (pin < 8) {
-        GPIOB->CRL &= ~(0xF << (pin * 4));
-        GPIOB->CRL |= (0x3 << (pin * 4)); // Output push-pull 50MHz
+        GPIOB->CRL &= ~(15 << (pin * 4));
+        GPIOB->CRL |= (3 << (pin * 4)); // Output push-pull 50MHz
     } else {
-        GPIOB->CRH &= ~(0xF << ((pin - 8) * 4));
-        GPIOB->CRH |= (0x3 << ((pin - 8) * 4)); // Output push-pull 50MHz
+        GPIOB->CRH &= ~(15 << ((pin - 8) * 4));
+        GPIOB->CRH |= (3 << ((pin - 8) * 4)); // Output push-pull 50MHz
     }
 }
 
 void dht22_output_mode(void) {
-    GPIOB->CRH &= ~(0xF << 4); // PB9
-    GPIOB->CRH |= (0x3 << 4);  // Output 50MHz push-pull
+    GPIOB->CRH &= ~(15 << 4); // PB9
+    GPIOB->CRH |= (3 << 4);  // Output 50MHz push-pull
 }
 
 // === DHT22 ===
@@ -148,10 +148,10 @@ uint8_t dht22_read(float *temperature) {
         }
     }
 
-    if (data[4] != ((data[0] + data[1] + data[2] + data[3]) & 0xFF)) return 1;
+    if (data[4] != ((data[0] + data[1] + data[2] + data[3]) & 255)) return 1;
 
-    int16_t temp_raw = ((data[2] & 0x7F) << 8) | data[3];
-    if (data[2] & 0x80) temp_raw = -temp_raw;
+    int16_t temp_raw = ((data[2] & 127) << 8) | data[3];
+    if (data[2] & 128) temp_raw = -temp_raw;
     *temperature = temp_raw * 0.1f;
 
     return 0;
@@ -160,7 +160,7 @@ uint8_t dht22_read(float *temperature) {
 // === ADC ===
 void adc_init(void) {
     RCC->APB2ENR |= RCC_APB2ENR_IOPAEN | RCC_APB2ENR_ADC1EN;
-    GPIOA->CRL &= ~(0xF << (POTENTIOMETER * 4)); // PA0: analog input
+    GPIOA->CRL &= ~(15 << (POTENTIOMETER * 4)); // PA0: analog input
     ADC1->CR2 |= ADC_CR2_ADON; // Power on
     delay_ms(1);
 }
@@ -177,8 +177,8 @@ void pwm_init(void) {
     RCC->APB2ENR |= RCC_APB2ENR_IOPAEN | RCC_APB2ENR_AFIOEN;
     RCC->APB1ENR |= RCC_APB1ENR_TIM3EN;
 
-    GPIOA->CRL &= ~(0xF << (FAN_PWM_PIN * 4));
-    GPIOA->CRL |= (0xB << (FAN_PWM_PIN * 4)); // AF push-pull
+    GPIOA->CRL &= ~(15 << (FAN_PWM_PIN * 4));
+    GPIOA->CRL |= (11 << (FAN_PWM_PIN * 4)); // AF push-pull
 
     TIM3->PSC = 72 - 1; // 1 MHz
     TIM3->ARR = 1000 - 1; // 1 kHz PWM
